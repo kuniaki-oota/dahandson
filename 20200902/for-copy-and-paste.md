@@ -3,7 +3,7 @@
 ## P.30 Web Server を自動実行する
 `Dockerfile` ファイルの内容
 
-```
+```Dockerfile
 FROM alpine:3.12
 LABEL maintainer="dreamarts.co.jp"
 
@@ -22,7 +22,7 @@ docker build -t alpine-nodejs .
 ```
 
 ## P.34 ビルドしたイメージの実行
-さくっと環境で共有した環境で使用している場合は `8080` のポート番号をそれぞれ変更してポート番号が重ならいようにしてください。
+さくっとの共有した環境で使用している場合は `8080` のポート番号をそれぞれ変更してポート番号が重ならいようにしてください。
 
 ```bash
 docker run -it -d --name http_server -p 8080:80 alpine-nodejs:latest
@@ -43,7 +43,7 @@ docker rm http_server
 ## P.42 Docker イメージを改修します
 `Dockerfile` ファイルの内容
 
-```
+```Dockerfile
 FROM alpine:3.12
 LABEL maintainer="dreamarts.co.jp"
 
