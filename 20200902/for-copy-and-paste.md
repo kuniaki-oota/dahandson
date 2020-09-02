@@ -8,9 +8,9 @@ FROM alpine:3.12
 LABEL maintainer="dreamarts.co.jp"
 
 RUN apk add --update nodejs npm yarn && \
-    mkdir -p /dadandson/http
+    mkdir -p /dahandson/http
 
-COPY server.js /dadandson/http/server.js
+COPY server.js /dahandson/http/server.js
 
 ENTRYPOINT ["/usr/bin/node","/dadandson/http/server.js"]
 ```
@@ -48,10 +48,10 @@ FROM alpine:3.12
 LABEL maintainer="dreamarts.co.jp"
 
 RUN apk add --update nodejs npm yarn && \
-    mkdir -p /dadandson/http && \
+    mkdir -p /dahandson/http && \
     mkdir -p /var/www/html
 
-COPY server.js /dadandson/http/server.js
+COPY server.js /dahandson/http/server.js
 
 COPY index.html /var/www/html/index.html
 
