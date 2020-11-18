@@ -89,3 +89,59 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: my-secret-pw
 ```
+
+## トピック
+### docker-compose.yml の中で値を使い回す方法
+yamlの機能である **アンカー/エイリアス** 機能を使うことで docker-compose.yml の中で値を使い回すことが出来るようになります。
+
+#### **アンカー/エイリアス** 機能とは
+[プログラマーのための YAML 入門 (初級編)](https://magazine.rubyist.net/articles/0009/0009-YAML.html#%E3%82%A2%E3%83%B3%E3%82%AB%E3%83%BC%E3%81%A8%E3%82%A8%E3%82%A4%E3%83%AA%E3%82%A2%E3%82%B9) より
+```
+YAML では、データに「&name」で印をつけ、「*name」で参照することができます (C 言語におけるアドレスやポインタと同じ表記です)。前者をアンカー (Anchor)、後者をエイリアス (Alias) といいます。
+```
+
+#### 使用例
+例えば 負荷試験で使用している Locust というツールの docker-compose.yml は下記のようにすることが出来ます。
+
+```yaml
+version: '3.7'
+
+services:
+  master:
+    image: locustio/locust
+    ports:
+     - "8089:8089"
+    volumes:
+      - ./:/mnt/locust
+    command: -f /mnt/locust/locustfile.py --master -H http://master:8089
+
+  worker:
+    image: locustio/locust
+    volumes:
+      - ./:/mnt/locust
+    command: -f /mnt/locust/locustfile.py --worker --master-host master
+```
+
+**アンカー/エイリアス** 機能を使って、
+
+```yaml
+version: '3.7'
+
+x-common: &common
+  image: locustio/locust
+  volumes:
+    - ./:/mnt/locust
+
+services:
+  master:
+    <<: *common
+    ports:
+      - "8089:8089"
+    command: -f /mnt/locust/locustfile.py --master -H http://master:8089
+
+  worker:
+    <<: *common
+    command: -f /mnt/locust/locustfile.py --worker --master-host master
+```
+
+と書くことが出来ます。
